@@ -1,0 +1,6 @@
+LinesLogParser/Debug/
+LinesLogParser/Release/
+*.sdf
+*.sln
+*.vcxproj
+*.filters
