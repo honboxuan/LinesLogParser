@@ -150,12 +150,22 @@ int main(int argc, char* argv[]) {
 #endif
 
 					//Output
+					/*
 					lines_log_output << "Time," << time << ",";
 					lines_log_output << "Accelerometer," << accel[0] << "," << accel[1] << "," << accel[2] << ",";
 					lines_log_output << "Temperature," << temperature << ",";
 					lines_log_output << "Gyroscope," << gyro[0] << "," << gyro[1] << "," << gyro[2] << ",";
 					if (mag_data) {
 						lines_log_output << "Magnetometer," << mag[0] << "," << mag[1] << "," << mag[2] << ",";
+					}
+					lines_log_output << "\n";
+					*/
+					lines_log_output << time << ",";
+					lines_log_output << accel[0] << "," << accel[1] << "," << accel[2] << ",";
+					lines_log_output << temperature << ",";
+					lines_log_output << gyro[0] << "," << gyro[1] << "," << gyro[2] << ",";
+					if (mag_data) {
+						lines_log_output << mag[0] << "," << mag[1] << "," << mag[2] << ",";
 					}
 					lines_log_output << "\n";
 				} else {
