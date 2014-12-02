@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
 		int16_t temperature;
 		int16_t gyro[3];
 		int16_t mag[3];
+		uint16_t adc[3];
 			
 		//Header
 		if (lines_log.read((char*)(&bytes_count), 1)) {
@@ -129,7 +130,15 @@ int main(int argc, char* argv[]) {
 #if DEBUG_OUTPUT
 					printf("G: %d, %d, %d\n", gyro[0], gyro[1], gyro[2]);
 #endif
-						
+					//ADC a.k.a. Force
+					for (uint8_t j = 0; j < 3; j++) {
+						adc[j] = (uint16_t(raw[j*2 + 1 + index_offset]) << 8) | raw[j*2 + index_offset]; //LSB first
+					}
+					index_offset += 6;
+#if DEBUG_OUTPUT
+					printf("F: %u, %u, %u\n", adc[0], adc[1], adc[2]);
+#endif
+
 					//Magnetometer
 					mag_data = false;
 					if (bytes_count > index_offset) {
@@ -138,8 +147,6 @@ int main(int argc, char* argv[]) {
 							mag[j] = (int16_t(raw[j*2 + 1 + index_offset]) << 8) | raw[j*2 + index_offset];
 						}
 						index_offset += 6;
-					}
-					if (mag_data) {
 #if DEBUG_OUTPUT
 						printf("M: %d, %d, %d\n", mag[0], mag[1], mag[2]);
 #endif
@@ -150,20 +157,11 @@ int main(int argc, char* argv[]) {
 #endif
 
 					//Output
-					/*
-					lines_log_output << "Time," << time << ",";
-					lines_log_output << "Accelerometer," << accel[0] << "," << accel[1] << "," << accel[2] << ",";
-					lines_log_output << "Temperature," << temperature << ",";
-					lines_log_output << "Gyroscope," << gyro[0] << "," << gyro[1] << "," << gyro[2] << ",";
-					if (mag_data) {
-						lines_log_output << "Magnetometer," << mag[0] << "," << mag[1] << "," << mag[2] << ",";
-					}
-					lines_log_output << "\n";
-					*/
 					lines_log_output << time << ",";
 					lines_log_output << accel[0] << "," << accel[1] << "," << accel[2] << ",";
 					lines_log_output << temperature << ",";
 					lines_log_output << gyro[0] << "," << gyro[1] << "," << gyro[2] << ",";
+					lines_log_output << adc[0] << "," << adc[1] << "," << adc[2] << ",";
 					if (mag_data) {
 						lines_log_output << mag[0] << "," << mag[1] << "," << mag[2] << ",";
 					}
