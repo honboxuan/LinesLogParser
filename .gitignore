@@ -4,3 +4,4 @@ LinesLogParser/Release/
 *.sln
 *.vcxproj
 *.filters
+*.opensdf
